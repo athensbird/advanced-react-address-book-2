@@ -8,7 +8,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedList: []
+      selectedList: [],
+      selectedListNotEmpty: false
     };
   }
   render() {
@@ -28,14 +29,16 @@ class App extends Component {
               selectedList: [
                 ...this.state.selectedList,
                 para
-              ]
+              ],
+              selectedListNotEmpty: true
             });
-          }} />
+          }} selectedListNotEmpty={true} />
         </div>
         <br />
         <h2>Selected Users</h2>
         <div>
-          <ListOfUsers users={this.state.selectedList} />
+          <ListOfUsers users={this.state.selectedList}
+            selectedListNotEmpty={this.state.selectedListNotEmpty} />
         </div>
       </div>
     );
