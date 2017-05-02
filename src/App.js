@@ -32,13 +32,15 @@ class App extends Component {
               ],
               selectedListNotEmpty: true
             });
-          }} selectedListNotEmpty={true} />
+          }} selectedListNotEmpty={true}
+            buttonText={"Select User"} />
         </div>
         <br />
         <h2>Selected Users</h2>
         <div>
           <ListOfUsers users={this.state.selectedList}
-            selectedListNotEmpty={this.state.selectedListNotEmpty} />
+            selectedListNotEmpty={this.state.selectedListNotEmpty}
+            buttonText={"Deselect User"} />
         </div>
       </div>
     );
