@@ -9,10 +9,20 @@ class App extends Component {
     super(props);
     this.state = {
       selectedList: [],
-      selectedListNotEmpty: false
+      availableList: [ ...this.props.users],
+      selectedListNotEmpty: false,
+      idList: []
     };
   }
   render() {
+    const idList = this.state.selectedList.map((user) => {
+      return user.id;
+    });
+    const list = this.props.users.filter(function (val) {
+      if (!(val.id in idList)) {
+        return val;
+      }
+    });
     return (
       <div className="App">
         <div className="App-header">
@@ -24,7 +34,7 @@ class App extends Component {
         </p>
         <h2>Available Users</h2>
         <div>
-          <ListOfUsers users={this.props.users} moveUsers={(para) => {
+          <ListOfUsers users={list} moveUsers={(para) => {
             this.setState({
               selectedList: [
                 ...this.state.selectedList,
@@ -32,6 +42,8 @@ class App extends Component {
               ],
               selectedListNotEmpty: true
             });
+            console.log(idList);
+            console.log(list);
           }} selectedListNotEmpty={true}
             buttonText={"Select User"} />
         </div>
@@ -40,8 +52,21 @@ class App extends Component {
         <div>
           <ListOfUsers users={this.state.selectedList}
             selectedListNotEmpty={this.state.selectedListNotEmpty}
-            buttonText={"Deselect User"} />
+            buttonText={"Deselect User"}
+            moveUsers={(para) => {
+              this.setState({
+                availableList: this.state.availableList.splice(para.id, 1)
+              });
+            }} />
         </div>
+        <h3>Reset</h3>
+        <button onClick={() => {
+          this.setState({
+            selectedListNotEmpty: false,
+            availableList: this.props.users,
+            selectedList: []
+          });
+        }}>Click Me</button>
       </div>
     );
   }
