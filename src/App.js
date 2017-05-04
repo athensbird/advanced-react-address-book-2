@@ -15,11 +15,9 @@ class App extends Component {
     };
   }
   render() {
-    const idList = this.state.selectedList.map((user) => {
-      return user.id;
-    });
-    const list = this.props.users.filter(function (val) {
-      if (!(val.id in idList)) {
+    // create available user list
+    const list = this.props.users.filter((val) => {
+      if (!(this.state.idList.includes(val.id))) {
         return val;
       }
     });
@@ -40,10 +38,12 @@ class App extends Component {
                 ...this.state.selectedList,
                 para
               ],
+              idList: [
+                ...this.state.idList,
+                para.id
+              ],
               selectedListNotEmpty: true
             });
-            console.log(idList);
-            console.log(list);
           }} selectedListNotEmpty={true}
             buttonText={"Select User"} />
         </div>
