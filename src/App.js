@@ -8,17 +8,20 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedList: [],
-      availableList: [ ...this.props.users],
       selectedListNotEmpty: false,
       idList: []
     };
   }
   render() {
     // create available user list
-    const list = this.props.users.filter((val) => {
-      if (!(this.state.idList.includes(val.id))) {
-        return val;
+    let availableList = this.props.users.filter((user) => {
+      if (!(this.state.idList.includes(user.id))) {
+        return user;
+      }
+    });
+    const chosenList = this.props.users.filter((user) => {
+      if (this.state.idList.includes(user.id)) {
+        return user;
       }
     });
     return (
@@ -32,39 +35,41 @@ class App extends Component {
         </p>
         <h2>Available Users</h2>
         <div>
-          <ListOfUsers users={list} moveUsers={(para) => {
+          <ListOfUsers users={availableList} moveUsers={(para) => {
             this.setState({
-              selectedList: [
-                ...this.state.selectedList,
-                para
-              ],
               idList: [
                 ...this.state.idList,
                 para.id
               ],
               selectedListNotEmpty: true
             });
+            // console.log(chosenList);
+            // console.log(availableList);
           }} selectedListNotEmpty={true}
             buttonText={"Select User"} />
         </div>
         <br />
         <h2>Selected Users</h2>
         <div>
-          <ListOfUsers users={this.state.selectedList}
+          <ListOfUsers users={chosenList}
             selectedListNotEmpty={this.state.selectedListNotEmpty}
             buttonText={"Deselect User"}
             moveUsers={(para) => {
+              // const removeIndex = this.state.idList.indexOf(para.id);
+              console.log("user", para);
               this.setState({
-                availableList: this.state.availableList.splice(para.id, 1)
+                idList: this.state.idList.length > 1 ?
+                 this.state.idList.filter((id) => {
+                   return id !== para.id;
+                 }) : []
               });
             }} />
         </div>
         <h3>Reset</h3>
         <button onClick={() => {
+          availableList = this.props.users;
           this.setState({
-            selectedListNotEmpty: false,
-            availableList: this.props.users,
-            selectedList: []
+            selectedListNotEmpty: false
           });
         }}>Click Me</button>
       </div>
